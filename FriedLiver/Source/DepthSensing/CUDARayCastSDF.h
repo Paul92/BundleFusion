@@ -8,7 +8,9 @@
 #include "DepthCameraUtil.h"
 #include "RayCastSDFUtil.h"
 
+#ifdef _WIN32
 #include "DX11RayIntervalSplatting.h"
+#endif
 
 class CUDARayCastSDF
 {
@@ -94,7 +96,9 @@ private:
 	mat4f m_rayCastIntrinsics;
 	mat4f m_rayCastIntrinsicsInverse;
 
+#ifdef _WIN32
 	DX11RayIntervalSplatting m_rayIntervalSplatting;
+#endif
 
 	static Timer m_timer;
 };

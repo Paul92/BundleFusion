@@ -4,7 +4,7 @@
 
 #include "cuda_SimpleMatrixUtil.h"
 
-__align__(16)	//has to be aligned to 16 bytes
+//__align__(16)	//has to be aligned to 16 bytes
 struct DepthCameraParams {
 	float fx;
 	float fy;
@@ -16,4 +16,4 @@ struct DepthCameraParams {
 
 	float m_sensorDepthWorldMin;	//render depth min
 	float m_sensorDepthWorldMax;	//render depth max
-};
+}__attribute__((aligned(16)));

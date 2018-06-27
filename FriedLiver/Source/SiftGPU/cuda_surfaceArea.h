@@ -5,6 +5,7 @@
 #include "cuda_EigenValue.h"
 #include "SIFTImageManager.h"
 #include "cudaUtil.h"
+#include <float.h>
 
 
 __shared__ matNxM<3, 3> V;

@@ -4,7 +4,7 @@
 
 #include "cuda_SimpleMatrixUtil.h"
 
-__align__(16)	//has to be aligned to 16 bytes
+//__align__(16)	//has to be aligned to 16 bytes
 struct RayCastParams {
 	float4x4 m_viewMatrix;
 	float4x4 m_viewMatrixInverse;
@@ -25,4 +25,4 @@ struct RayCastParams {
 	bool  m_useGradients;
 
 	uint dummy0;
-};
+}__attribute__((aligned(16)));

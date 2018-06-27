@@ -2,7 +2,7 @@
 
 #include "GlobalAppState.h"
 
-
+#ifdef _WIN32
 HRESULT GlobalAppState::OnD3D11CreateDevice(ID3D11Device* pd3dDevice)
 {
 	HRESULT hr = S_OK;
@@ -34,3 +34,4 @@ void GlobalAppState::WaitForGPU()
 
 	while (S_OK != DXUTGetD3D11DeviceContext()->GetData(m_pQuery, NULL, 0, 0));
 }
+#endif

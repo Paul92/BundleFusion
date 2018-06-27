@@ -7,7 +7,7 @@
 #include "cuda_SimpleMatrixUtil.h"
 
 //TODO might have to be split into static and dynamics
-__align__(16)	//has to be aligned to 16 bytes
+//__align__(16)	//has to be aligned to 16 bytes
 struct HashParams {
 	HashParams() {
 	}
@@ -36,4 +36,4 @@ struct HashParams {
 	unsigned int	m_streamingInitialChunkListSize;
 	uint2			m_dummy;
 
-};
+}__attribute__((aligned(16)));

@@ -155,12 +155,15 @@ public:
 			MLIB_CUDA_SAFE_CALL(cudaMemcpy(intensity.getData(), f.d_intensityDownsampled, sizeof(float)*intensity.getNumPixels(), cudaMemcpyDeviceToHost));
 			MLIB_CUDA_SAFE_CALL(cudaMemcpy(image8.getData(), f.d_normalsDownsampledUCHAR4, sizeof(uchar4)*image8.getNumPixels(), cudaMemcpyDeviceToHost));
 			MLIB_CUDA_SAFE_CALL(cudaMemcpy(image.getData(), f.d_normalsDownsampled, sizeof(float4)*image.getNumPixels(), cudaMemcpyDeviceToHost));
-			for (auto& p : image) {
+
+			for (ml::BaseImage<ml::vec4f>::iterator it = image.begin(); it != image.end(); ++it) {
+				auto p = *it;
 				if (p.value.x != -std::numeric_limits<float>::infinity()) {
 					p.value.w = 1.0f;
 					image8(p.x, p.y).w = 255;
 				}
 			}
+
 			FreeImageWrapper::saveImage(outDir + std::to_string(i) + "_cache-depth.png", ColorImageR32G32B32(depth));
 			FreeImageWrapper::saveImage(outDir + std::to_string(i) + "_cache-intensity.png", intensity);
 			FreeImageWrapper::saveImage(outDir + std::to_string(i) + "_cache-normal-uchar4.png", image8);

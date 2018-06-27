@@ -53,7 +53,7 @@ static const int LOCK_ENTRY = -1;
 static const int FREE_ENTRY = -2;
 static const int NO_OFFSET = 0;
  
-__align__(16)
+//__align__(16)
 struct HashEntry 
 {
 	int3	pos;		//hash position (lower left corner of SDFBlock))
@@ -71,7 +71,7 @@ struct HashEntry
 		((long long*)this)[1] = ((const long long*)&e)[1];
 		((int*)this)[4] = ((const int*)&e)[4];
 	}
-};
+}__attribute__((aligned(16)));
 
 //__align__(8)
 struct Voxel {

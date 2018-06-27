@@ -15,17 +15,17 @@
 #define X_GLOBAL_BUNDLING_APP_STATE_FIELDS \
 	X(bool, s_enableGlobalTimings) \
 	X(bool, s_enablePerFrameTimings) \
-	X(unsigned int, s_maxNumImages) \
-	X(unsigned int, s_submapSize) \
-	X(unsigned int, s_widthSIFT) \
-	X(unsigned int, s_heightSIFT) \
-	X(unsigned int, s_maxNumKeysPerImage) \
-	X(unsigned int, s_numLocalNonLinIterations) \
-	X(unsigned int, s_numLocalLinIterations) \
-	X(unsigned int, s_numGlobalNonLinIterations) \
-	X(unsigned int, s_numGlobalLinIterations) \
-	X(unsigned int, s_downsampledWidth) \
-	X(unsigned int, s_downsampledHeight) \
+	X(UINT, s_maxNumImages) \
+	X(UINT, s_submapSize) \
+	X(UINT, s_widthSIFT) \
+	X(UINT, s_heightSIFT) \
+	X(UINT, s_maxNumKeysPerImage) \
+	X(UINT, s_numLocalNonLinIterations) \
+	X(UINT, s_numLocalLinIterations) \
+	X(UINT, s_numGlobalNonLinIterations) \
+	X(UINT, s_numGlobalLinIterations) \
+	X(UINT, s_downsampledWidth) \
+	X(UINT, s_downsampledHeight) \
 	X(float, s_verifySiftErrThresh) \
 	X(float, s_verifySiftCorrThresh) \
 	X(float, s_projCorrDistThres) \
@@ -41,8 +41,8 @@
 	X(float, s_depthSigmaD) \
 	X(float, s_depthSigmaR) \
 	X(bool, s_depthFilter) \
-	X(unsigned int, s_minNumMatchesLocal) \
-	X(unsigned int, s_minNumMatchesGlobal) \
+	X(UINT, s_minNumMatchesLocal) \
+	X(UINT, s_minNumMatchesGlobal) \
 	X(bool, s_useComprehensiveFrameInvalidation) \
 	X(float, s_maxKabschResidual2) \
 	X(float, s_minKeyScale) \
@@ -51,7 +51,7 @@
 	X(float, s_siftMatchRatioMaxGlobal) \
 	X(bool, s_useLocalVerify) \
 	X(bool, s_useLocalDense) \
-	X(unsigned int, s_numOptPerResidualRemoval) \
+	X(UINT, s_numOptPerResidualRemoval) \
 	X(float, s_colorDownSigma) \
 	X(float, s_depthDownSigmaD) \
 	X(float, s_depthDownSigmaR) \
@@ -62,7 +62,7 @@
 	X(float, s_denseColorGradientMin) \
 	X(float, s_denseDepthMin) \
 	X(float, s_denseDepthMax) \
-	X(unsigned int, s_denseOverlapCheckSubsampleFactor)
+	X(UINT, s_denseOverlapCheckSubsampleFactor)
 
 using namespace ml;
 

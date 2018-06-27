@@ -146,7 +146,9 @@ extern "C" void chunkToGlobalHashPass1CUDA(const HashParams& hashParams, const H
 extern "C" void chunkToGlobalHashPass2CUDA(const HashParams& hashParams, const HashDataStruct& hashData, uint numSDFBlockDescs, uint heapCountPrev, const SDFBlockDesc* d_SDFBlockDescs, const Voxel* d_SDFBlocks);
 
 
+#ifdef _WIN32
 LONG WINAPI StreamingFunc(LPVOID lParam);
+#endif
 
 
 class CUDASceneRepChunkGrid {
@@ -228,7 +230,7 @@ public:
 					vec3f posWorld = vec3f(pos*SDF_BLOCK_SIZE)*hashParams.m_virtualVoxelSize;
 					hashPoints.push_back(posWorld);
 					for (unsigned int l = 0; l < linearBlockSize; l++) {
-						if (blocks[k].data[l].weight > 0 && std::fabsf(blocks[k].data[l].sdf) <= thresh) {
+						if (blocks[k].data[l].weight > 0 && std::abs(blocks[k].data[l].sdf) <= thresh) {
 							vec3i posUI = SDFBlock::delinearizeVoxelIndex(l) + pos;
 							vec3f posWorld = vec3f(posUI*SDF_BLOCK_SIZE)*hashParams.m_virtualVoxelSize;
 							voxelPoints.push_back(posWorld);
@@ -246,6 +248,7 @@ public:
 
 	void startMultiThreading() {
 
+#ifdef _WIN32
 		initializeCriticalSection();
 
 		s_terminateThread = false;
@@ -255,10 +258,14 @@ public:
 		if (hStreamingThread == NULL) {
 			std::cout << "Thread GPU-CPU could not be created" << std::endl;
 		}
+#else
+                throw "Multithreading not implemented for your platform";
+#endif
 	}
 
 	void stopMultiThreading() {
 
+#ifdef _WIN32
 		if (!s_terminateThread) {
 			//WaitForSingleObject(hEventOutProduce, INFINITE);
 			//WaitForSingleObject(hMutexOut, INFINITE);
@@ -284,6 +291,9 @@ public:
 			// Mutex
 			deleteCritialSection();
 		}
+#else
+                throw "Multithreading not implemented for your platform";
+#endif
 	}
 
 	void clearGrid() {
@@ -590,6 +600,7 @@ public:
 
 	// Mutex
 	void deleteCritialSection() {
+#ifdef _WIN32
 		CloseHandle(hMutexOut);
 		CloseHandle(hEventOutProduce);
 		CloseHandle(hEventOutConsume);
@@ -601,9 +612,13 @@ public:
 		CloseHandle(hMutexSetTransform);
 		CloseHandle(hEventSetTransformProduce);
 		CloseHandle(hEventSetTransformConsume);
+#else
+                throw "Multithreading not implemented for your platform";
+#endif
 	}
 
 	void initializeCriticalSection() {
+#ifdef _WIN32
 		hMutexOut = CreateMutex(NULL, FALSE, NULL);
 		hEventOutProduce = CreateEvent(NULL, FALSE, TRUE, NULL);
 		hEventOutConsume = CreateEvent(NULL, FALSE, FALSE, NULL);
@@ -615,6 +630,9 @@ public:
 		hMutexSetTransform = CreateMutex(NULL, FALSE, NULL);
 		hEventSetTransformProduce = CreateEvent(NULL, FALSE, TRUE, NULL);
 		hEventSetTransformConsume = CreateEvent(NULL, FALSE, FALSE, NULL);
+#else
+                throw "Multithreading not implemented for your platform";
+#endif
 	}
 
 
@@ -664,6 +682,7 @@ public:
 	unsigned int m_streamOutParts;
 
 	// Multi-threading
+#ifdef _WIN32
 	HANDLE hStreamingThread;
 	DWORD dwStreamingThreadID;
 
@@ -679,6 +698,7 @@ public:
 	HANDLE hMutexSetTransform;
 	HANDLE hEventSetTransformProduce;
 	HANDLE hEventSetTransformConsume;
+#endif
 
 	Timer m_timer;
 	

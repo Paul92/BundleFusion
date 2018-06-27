@@ -320,7 +320,7 @@ extern "C" void compactifyHashCUDA(HashDataStruct& hashData, const HashParams& h
 }
 
 #define COMPACTIFY_HASH_THREADS_PER_BLOCK 256
-//#define COMPACTIFY_HASH_SIMPLE
+#define COMPACTIFY_HASH_SIMPLE
 __global__ void compactifyHashAllInOneKernel(HashDataStruct hashData)
 {
 	const HashParams& hashParams = c_hashParams;

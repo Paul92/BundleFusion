@@ -1,7 +1,12 @@
 #pragma once
 #include "RGBDSensor.h"
 #include "CUDAImageUtil.h"
+
+#ifdef _WIN32
 #include "CUDAImageCalibrator.h"
+#endif
+
+#include "GlobalAppState.h"
 #include "GlobalBundlingState.h"
 #include "TimingLog.h"
 
@@ -193,11 +198,13 @@ public:
 		m_bHasBundlingFrameRdy = false;
 	}
 
+#ifdef _WIN32
 	HRESULT OnD3D11CreateDevice(ID3D11Device* device) {
 		HRESULT hr = S_OK;
 		V_RETURN(m_imageCalibrator.OnD3D11CreateDevice(device, m_RGBDSensor->getDepthWidth(), m_RGBDSensor->getDepthHeight()));
 		return hr;
 	}
+#endif
 
 	~CUDAImageManager() {
 		reset();
@@ -307,7 +314,9 @@ private:
 	bool m_bHasBundlingFrameRdy;
 
 	RGBDSensor* m_RGBDSensor;
+#ifdef _WIN32
 	CUDAImageCalibrator m_imageCalibrator;
+#endif
 
 	mat4f m_colorIntrinsics;
 	mat4f m_colorIntrinsicsInv;

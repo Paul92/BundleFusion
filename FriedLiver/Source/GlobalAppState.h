@@ -9,7 +9,7 @@
 #define STRUCTURE_SENSOR
 #define SENSOR_DATA_READER
 
-#define RUN_MULTITHREADED
+//#define RUN_MULTITHREADED
 
 #include "stdafx.h"
 
@@ -22,30 +22,30 @@
 #define RENDERMODE_VIEW 1
 
 #define X_GLOBAL_APP_STATE_FIELDS \
-	X(unsigned int, s_sensorIdx) \
-	X(unsigned int, s_windowWidth) \
-	X(unsigned int, s_windowHeight) \
-	X(unsigned int, s_integrationWidth) \
-	X(unsigned int, s_integrationHeight) \
-	X(unsigned int, s_rayCastWidth) \
-	X(unsigned int, s_rayCastHeight) \
-	X(unsigned int, s_maxFrameFixes) \
-	X(unsigned int, s_topNActive) \
+	X(UINT, s_sensorIdx) \
+	X(UINT, s_windowWidth) \
+	X(UINT, s_windowHeight) \
+	X(UINT, s_integrationWidth) \
+	X(UINT, s_integrationHeight) \
+	X(UINT, s_rayCastWidth) \
+	X(UINT, s_rayCastHeight) \
+	X(UINT, s_maxFrameFixes) \
+	X(UINT, s_topNActive) \
 	X(float, s_minPoseDistSqrt) \
 	X(float, s_sensorDepthMax) \
 	X(float, s_sensorDepthMin) \
 	X(float, s_renderDepthMax) \
 	X(float, s_renderDepthMin) \
-	X(unsigned int, s_hashNumBuckets) \
-	X(unsigned int, s_hashNumSDFBlocks) \
-	X(unsigned int, s_hashMaxCollisionLinkedListSize) \
+	X(UINT, s_hashNumBuckets) \
+	X(UINT, s_hashNumSDFBlocks) \
+	X(UINT, s_hashMaxCollisionLinkedListSize) \
 	X(float, s_SDFVoxelSize) \
 	X(float, s_SDFMarchingCubeThreshFactor) \
 	X(float, s_SDFTruncation) \
 	X(float, s_SDFTruncationScale) \
 	X(float, s_SDFMaxIntegrationDistance) \
-	X(unsigned int, s_SDFIntegrationWeightSample) \
-	X(unsigned int, s_SDFIntegrationWeightMax) \
+	X(UINT, s_SDFIntegrationWeightSample) \
+	X(UINT, s_SDFIntegrationWeightMax) \
 	X(std::string, s_binaryDumpSensorFile) \
 	X(bool, s_binaryDumpSensorUseTrajectory) \
 	X(float, s_depthSigmaD) \
@@ -68,28 +68,28 @@
 	X(bool, s_integrationEnabled) \
 	X(bool, s_trackingEnabled) \
 	X(bool, s_garbageCollectionEnabled) \
-	X(unsigned int, s_garbageCollectionStarve) \
+	X(UINT, s_garbageCollectionStarve) \
 	X(bool, s_SDFUseGradients) \
 	X(bool, s_timingsDetailledEnabled) \
 	X(bool, s_timingsTotalEnabled) \
-	X(unsigned int, s_RenderMode) \
+	X(UINT, s_RenderMode) \
 	X(bool, s_playData) \
 	X(float, s_renderingDepthDiscontinuityThresLin) \
 	X(float, s_remappingDepthDiscontinuityThresLin) \
 	X(float, s_remappingDepthDiscontinuityThresOffset) \
 	X(float, s_renderingDepthDiscontinuityThresOffset) \
 	X(bool, s_bUseCameraCalibration) \
-	X(unsigned int, s_marchingCubesMaxNumTriangles) \
+	X(UINT, s_marchingCubesMaxNumTriangles) \
 	X(bool, s_streamingEnabled) \
 	X(vec3f, s_streamingVoxelExtents) \
 	X(vec3i, s_streamingGridDimensions) \
 	X(vec3i, s_streamingMinGridPos) \
-	X(unsigned int, s_streamingInitialChunkListSize) \
+	X(UINT, s_streamingInitialChunkListSize) \
 	X(float, s_streamingRadius) \
 	X(vec3f, s_streamingPos) \
-	X(unsigned int, s_streamingOutParts) \
-	X(unsigned int, s_recordDataWidth) \
-	X(unsigned int, s_recordDataHeight) \
+	X(UINT, s_streamingOutParts) \
+	X(UINT, s_recordDataWidth) \
+	X(UINT, s_recordDataHeight) \
 	X(bool, s_recordData) \
 	X(bool, s_recordCompression) \
 	X(std::string, s_recordDataFile) \
@@ -101,7 +101,7 @@
 	X(mat4f, s_topVideoTransformWorld) \
 	X(vec4f, s_topVideoCameraPose) \
 	X(vec2f, s_topVideoMinMax) \
-	X(unsigned int, s_numSolveFramesBeforeExit)
+	X(UINT, s_numSolveFramesBeforeExit)
 
 
 #ifndef VAR_NAME
@@ -154,7 +154,9 @@ public:
 	//! constructor
 	GlobalAppState() {
 		m_bIsInitialized = false;
+#ifdef _WIN32
 		m_pQuery = NULL;
+#endif
 	}
 
 	//! destructor
@@ -162,8 +164,10 @@ public:
 	}
 
 
+#ifdef _WIN32
 	HRESULT OnD3D11CreateDevice(ID3D11Device* pd3dDevice);
 	void OnD3D11DestroyDevice();
+#endif
 
 	void WaitForGPU();
 
@@ -172,5 +176,7 @@ public:
 private:
 	bool			m_bIsInitialized;
 	ParameterFile	m_ParameterFile;
+#ifdef _WIN32
 	ID3D11Query*	m_pQuery;
+#endif
 };

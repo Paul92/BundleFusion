@@ -21,7 +21,9 @@ void CUDARayCastSDF::create(const RayCastParams& params)
 {
 	m_params = params;
 	m_data.allocate(m_params);
+#ifdef _WIN32
 	m_rayIntervalSplatting.OnD3D11CreateDevice(DXUTGetD3D11Device(), params.m_width, params.m_height);
+#endif
 
 	m_rayCastIntrinsics = mat4f(
 		params.fx, 0.0f, params.mx, 0.0f,
@@ -34,14 +36,18 @@ void CUDARayCastSDF::create(const RayCastParams& params)
 void CUDARayCastSDF::destroy(void)
 {
 	m_data.free();
+#ifdef _WIN32
 	m_rayIntervalSplatting.OnD3D11DestroyDevice();
+#endif
 }
 
 void CUDARayCastSDF::render(const HashDataStruct& hashData, const HashParams& hashParams, const mat4f& lastRigidTransform)
 {
 	rayIntervalSplatting(hashData, hashParams, lastRigidTransform);
+#ifdef _WIN32
 	m_data.d_rayIntervalSplatMinArray = m_rayIntervalSplatting.mapMinToCuda();
 	m_data.d_rayIntervalSplatMaxArray = m_rayIntervalSplatting.mapMaxToCuda();
+#endif
 
 	// Start query for timing
 	if(GlobalAppState::getInstance().s_timingsDetailledEnabled)
@@ -58,7 +64,9 @@ void CUDARayCastSDF::render(const HashDataStruct& hashData, const HashParams& ha
 		computeNormals(m_data.d_normals, m_data.d_depth4, m_params.m_width, m_params.m_height);
 	}
 
+#ifdef _WIN32
 	m_rayIntervalSplatting.unmapCuda();
+#endif
 
 	// Wait for query
 	if(GlobalAppState::getInstance().s_timingsDetailledEnabled)
@@ -94,5 +102,7 @@ void CUDARayCastSDF::rayIntervalSplatting(const HashDataStruct& hashData, const 
 
 	//m_data.updateParams(m_params); // !!! debugging
 
+#ifdef _WIN32
 	m_rayIntervalSplatting.rayIntervalSplatting(DXUTGetD3D11DeviceContext(), hashData, m_data, m_params, m_params.m_numOccupiedSDFBlocks*6);
+#endif
 }

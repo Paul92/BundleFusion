@@ -5,7 +5,6 @@
 #ifndef _IMAGE_MANAGER_H_
 #define _IMAGE_MANAGER_H_
 
-#include <windows.h>
 #include <cuda_runtime.h>
 #include <cutil_inline.h>
 
@@ -86,7 +85,7 @@ public:
 	void finalizeSIFTImageGPU(unsigned int numKeyPoints);
 
 	// ------- image-image matching (API for the Sift matcher)
-	ImagePairMatch& SIFTImageManager::getImagePairMatch(unsigned int prevImageIdx, unsigned int curImageIdx, uint2& keyPointOffset);
+	ImagePairMatch& getImagePairMatch(unsigned int prevImageIdx, unsigned int curImageIdx, uint2& keyPointOffset);
 
 	ImagePairMatch& getImagePairMatchDEBUG(unsigned int prevImageIdx, unsigned int curImageIdx, uint2& keyPointOffset)
 	{

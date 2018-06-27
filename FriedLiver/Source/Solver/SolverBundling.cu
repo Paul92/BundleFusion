@@ -13,9 +13,7 @@
 #include "SolverBundlingEquations.h"
 #include "SolverBundlingEquationsLie.h"
 #include "SolverBundlingDenseUtil.h"
-#include "../../SiftGPU/CUDATimer.h"
-
-#include <conio.h>
+#include "../SiftGPU/CUDATimer.h"
 
 #define THREADS_PER_BLOCK_DENSE_DEPTH 128
 #define THREADS_PER_BLOCK_DENSE_DEPTH_FLIP 64

@@ -39,8 +39,10 @@ using namespace std;
 #include "SiftPyramid.h"
 #include "ProgramCU.h"
 
-
+#ifdef _WIN32
 #include "direct.h"
+#endif
+
 #pragma warning (disable : 4786) 
 #pragma warning (disable : 4996) 
 

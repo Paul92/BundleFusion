@@ -18,7 +18,10 @@
 //#include "mLibZlib.h"
 //#include "mLibFreeImage.h"
 #include "mLibLodePNG.h"
+
+#ifdef _WIN32
 #include "mLibD3D11.h"
+#endif
 
 #include "mLibEigen.h"
 

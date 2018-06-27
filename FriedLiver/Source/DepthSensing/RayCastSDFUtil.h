@@ -264,7 +264,8 @@ struct RayCastData {
 
 							if(rayCastParams.m_useGradients)
 							{
-								float3 normal = -gradientForPoint(hash, currentIso);
+								float3 gradient = gradientForPoint(hash, currentIso);
+								float3 normal = -gradient;
 								float4 n = rayCastParams.m_viewMatrix * make_float4(normal, 0.0f);
 								d_normals[dTid.y*rayCastParams.m_width+dTid.x] = make_float4(n.x, n.y, n.z, 1.0f);
 							}

@@ -77,7 +77,10 @@ bool CUDAImageManager::process()
 		//MLIB_CUDA_SAFE_CALL(cudaMemcpy(depthImage.getData(), d_depthInputRaw, sizeof(float)*depthImage.getNumPixels(), cudaMemcpyDeviceToHost));
 		//FreeImageWrapper::saveImage("debug/_depth-orig.png", ColorImageR32G32B32(depthImage));
 		
+#ifdef WIN32
 		m_imageCalibrator.process(DXUTGetD3D11DeviceContext(), d_depthInputRaw, m_SIFTdepthIntrinsics, m_RGBDSensor->getDepthIntrinsicsInv(), m_RGBDSensor->getDepthExtrinsics());
+#endif
+
 		
 		//MLIB_CUDA_SAFE_CALL(cudaMemcpy(depthImage.getData(), d_depthInputRaw, sizeof(float)*depthImage.getNumPixels(), cudaMemcpyDeviceToHost));
 		//FreeImageWrapper::saveImage("debug/_depth-new.png", ColorImageR32G32B32(depthImage));

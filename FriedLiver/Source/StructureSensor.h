@@ -9,14 +9,18 @@
 
 #define WIN32_LEAN_AND_MEAN
 
+#ifdef _WIN32
 #include <windows.h>
 #include <winsock2.h>
 #include <ws2tcpip.h>
+#endif
 
 #include "RGBDSensor.h"
 
+#ifdef _WIN32
 #include <uplink.h>
 #include "Uplink/desktop-server.h"
+#endif
 
 //------------------------------------------------------------------------------
 

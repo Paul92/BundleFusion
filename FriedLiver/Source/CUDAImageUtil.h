@@ -46,8 +46,8 @@ public:
 };
 
 //TODO 
-template void CUDAImageUtil::copy<float>(float*, float*, unsigned int, unsigned int);
-template void CUDAImageUtil::copy<uchar4>(uchar4*, uchar4*, unsigned int, unsigned int);
+//template void CUDAImageUtil::copy<float>(float*, float*, unsigned int, unsigned int);
+//template void CUDAImageUtil::copy<uchar4>(uchar4*, uchar4*, unsigned int, unsigned int);
 //template void CUDAImageUtil::resample<float>(float*, unsigned int, unsigned int, float*, unsigned int, unsigned int);
 //template void CUDAImageUtil::resample<uchar4>(uchar4*, unsigned int, unsigned int, uchar4*, unsigned int, unsigned int);
 

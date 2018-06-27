@@ -1,7 +1,11 @@
 #pragma once
 
 #include <cuda_runtime.h>
+
+#ifdef _WIN32
 #include <cuda_d3d11_interop.h>
+#include <conio.h>
+#endif
 
 #include "../SiftGPU/cudaUtil.h"
 #include "SolverBundlingParameters.h"
@@ -9,8 +13,6 @@
 
 #include "../SiftGPU/cuda_SimpleMatrixUtil.h"
 #include "../SiftGPU/CUDATimer.h"
-
-#include <conio.h>
 
 class CUDACache;
 //#define NEW_GUIDED_REMOVE 

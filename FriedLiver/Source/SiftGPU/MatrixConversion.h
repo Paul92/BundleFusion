@@ -30,6 +30,7 @@ namespace MatrixConversion
 		return float3x3(m.getData());
 	}
 
+#ifdef _WIN32
 	// dx/cuda conversion
 	static vec3f toMlib(const D3DXVECTOR3& v) {
 		return vec3f(v.x, v.y, v.z);
@@ -41,6 +42,7 @@ namespace MatrixConversion
 		mat4f c((const float*)&m);
 		return c.getTranspose();
 	}
+#endif
 
 	static float4 toCUDA(const ml::vec4f& v) {
 		return make_float4(v.x, v.y, v.z, v.w);

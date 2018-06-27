@@ -6,7 +6,7 @@
 #define THREADS_PER_BLOCK 8
 
 #ifdef USE_LIE_SPACE
-#include "Solver\LieDerivUtil.h"
+#include "Solver/LieDerivUtil.h"
 #else
 //! assumes z-y-x rotation composition (euler angles)
 __device__ void matrixToPose(const float4x4& matrix, float3& rot, float3& trans)

@@ -3,6 +3,7 @@
 
 #include "CUDASceneRepChunkGrid.h"
 
+#ifdef _WIN32
 LONG WINAPI StreamingFunc(LPVOID lParam) 
 {
 	CUDASceneRepChunkGrid* chunkGrid = (CUDASceneRepChunkGrid*)lParam;
@@ -22,6 +23,7 @@ LONG WINAPI StreamingFunc(LPVOID lParam)
 
 	return 0;
 }
+#endif
 
 void CUDASceneRepChunkGrid::streamOutToCPUAll()
 {
@@ -51,8 +53,12 @@ void CUDASceneRepChunkGrid::streamOutToCPU(const vec3f& posCamera, float radius,
 void CUDASceneRepChunkGrid::streamOutToCPUPass0GPU(const vec3f& posCamera, float radius, bool useParts, bool multiThreaded /*= true*/ )
 {
 	if (multiThreaded) {
+#ifdef _WIN32
 		WaitForSingleObject(hEventOutProduce, INFINITE);
 		WaitForSingleObject(hMutexOut, INFINITE);
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 
 	s_posCamera = posCamera;
@@ -95,18 +101,26 @@ void CUDASceneRepChunkGrid::streamOutToCPUPass0GPU(const vec3f& posCamera, float
 	s_nStreamdOutBlocks = nSDFBlockDescs;
 
 	if (multiThreaded) {
+#ifdef _WIN32
 		SetEvent(hEventOutConsume);
 		ReleaseMutex(hMutexOut);
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 }
 
 void CUDASceneRepChunkGrid::streamOutToCPUPass1CPU(bool multiThreaded /*= true*/ )
 {
 	if (multiThreaded) {
+#ifdef _WIN32
 		WaitForSingleObject(hEventOutConsume, INFINITE);
 		WaitForSingleObject(hMutexOut, INFINITE);
 
 		if (s_terminateThread)	return;		//avoid duplicate insertions when stop multithreading is called
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 
 	if (s_nStreamdOutBlocks != 0) {
@@ -114,8 +128,12 @@ void CUDASceneRepChunkGrid::streamOutToCPUPass1CPU(bool multiThreaded /*= true*/
 	}
 
 	if (multiThreaded) {
+#ifdef _WIN32
 		SetEvent(hEventOutProduce);
 		ReleaseMutex(hMutexOut);
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 }
 
@@ -205,9 +223,14 @@ void CUDASceneRepChunkGrid::streamInToGPU(const vec3f& posCamera, float radius, 
 void CUDASceneRepChunkGrid::streamInToGPUPass0CPU( const vec3f& posCamera, float radius, bool useParts, bool multiThreaded /*= true*/ )
 {
 	if (multiThreaded) {
+#ifdef _WIN32
 		WaitForSingleObject(hEventInProduce, INFINITE);
 		WaitForSingleObject(hMutexIn, INFINITE);
 		if (s_terminateThread)	return;	//avoid duplicate insertions when stop multithreading is called
+
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 
 	unsigned int nSDFBlockDescs = integrateInHash(posCamera, radius, useParts);
@@ -216,16 +239,24 @@ void CUDASceneRepChunkGrid::streamInToGPUPass0CPU( const vec3f& posCamera, float
 
 
 	if (multiThreaded) {
+#ifdef _WIN32
 		SetEvent(hEventInConsume);
 		ReleaseMutex(hMutexIn);
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 }
 
 void CUDASceneRepChunkGrid::streamInToGPUPass1GPU( bool multiThreaded /*= true*/ )
 {
 	if (multiThreaded) {
+#ifdef _WIN32
 		WaitForSingleObject(hEventInConsume, INFINITE);
 		WaitForSingleObject(hMutexIn, INFINITE);
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 
 	if (s_nStreamdInBlocks != 0) {
@@ -256,8 +287,12 @@ void CUDASceneRepChunkGrid::streamInToGPUPass1GPU( bool multiThreaded /*= true*/
 	}
 
 	if (multiThreaded) {
+#ifdef _WIN32
 		SetEvent(hEventInProduce);
 		ReleaseMutex(hMutexIn);
+#else
+                throw MLIB_EXCEPTION("Multithreading not supported on your platform");
+#endif
 	}
 }
 
@@ -331,5 +366,5 @@ void CUDASceneRepChunkGrid::debugCheckForDuplicates() const
 			}
 		}
 	}
-	std::cout << __FUNCTION__ " : OK!" << std::endl;
+	std::cout << __FUNCTION__ << " : OK!" << std::endl;
 }
