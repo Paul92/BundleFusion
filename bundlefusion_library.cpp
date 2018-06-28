@@ -169,7 +169,7 @@ bool sb_init_slam_system(SLAMBenchLibraryHelper * slam_settings) {
     slam_settings->GetOutputManager().RegisterOutput(depth_frame_output);
     depth_frame_output->SetActive(true);
 
-    trajectory_output = new slambench::outputs::Output("Trajectory", slambench::values::VT_TRAJECTORY);
+    trajectory_output = new slambench::outputs::Output("Trajectory", slambench::values::VT_TRAJECTORY, true);
     trajectory_output->SetKeepOnlyMostRecent(true);
     slam_settings->GetOutputManager().RegisterOutput(trajectory_output);
     trajectory_output->SetActive(true);
