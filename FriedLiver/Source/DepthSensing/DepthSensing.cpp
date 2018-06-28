@@ -1502,6 +1502,7 @@ void renderTopDown(ID3D11DeviceContext* pd3dImmediateContext, const mat4f& lastR
 }
 #endif
 
+#ifdef _WIN32
 void renderFrustum(const mat4f& transform, const mat4f& cameraMatrix, const vec4f& color) {
 	std::vector<LineSegment3f> frustum;
 
@@ -1528,7 +1529,6 @@ void renderFrustum(const mat4f& transform, const mat4f& cameraMatrix, const vec4
 
 	float fx = g_rayCast->getIntrinsics()(0, 0);
 	float fy = g_rayCast->getIntrinsics()(1, 1);
-#ifdef _WIN32
 	mat4f proj = Cameraf::visionToGraphicsProj(g_RenderToFileTarget.getWidth(), g_RenderToFileTarget.getHeight(), fx, fy, 1.0f, 25.0f);
 
 	ml::D3D11GraphicsDevice g;	g.init(DXUTGetD3D11Device(), DXUTGetD3D11DeviceContext(), DXUTGetDXGISwapChain(), DXUTGetD3D11RenderTargetView(), DXUTGetD3D11DepthStencilView());
@@ -1538,7 +1538,6 @@ void renderFrustum(const mat4f& transform, const mat4f& cameraMatrix, const vec4
 	m_constants.init(g);
 	ConstantBuffer cBuffer;	cBuffer.worldViewProj = proj * cameraMatrix;
 	m_constants.updateAndBind(cBuffer, 0);
-#endif
 
 	MeshDataf debugMesh;
 
@@ -1547,15 +1546,14 @@ void renderFrustum(const mat4f& transform, const mat4f& cameraMatrix, const vec4
 		auto triMesh = ml::Shapesf::cylinder(line.p0(), line.p1(), radius, 10, 10, color);
 		debugMesh.merge(triMesh.computeMeshData());
 
-#ifdef _WIN32
 		ml::D3D11TriMesh renderLine;
 		renderLine.init(g, triMesh);
 
 		g.getShaderManager().bindShaders("defaultBasic");
 		renderLine.render();
-#endif
 	}
 }
+#endif
 
 RGBDSensor* getRunningSensor() {
     return g_depthSensingRGBDSensor;
