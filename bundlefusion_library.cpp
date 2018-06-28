@@ -306,12 +306,9 @@ bool sb_update_outputs(SLAMBenchLibraryHelper *lib, const slambench::TimeStamp *
         for (const auto &pose : initialTrajectory)
             trajectory.push_back(ts, matToEigen(pose));
 
-        std::cout << "Generated a trajectory of size " << trajectory.size() << " from an input of size " << initialTrajectory.size() << std::endl;
-
         std::lock_guard<FastLock> lock (lib->GetOutputManager().GetLock());
 
         auto trajectoryValue = new slambench::values::TrajectoryValue(trajectory);
-
         trajectory_output->AddPoint(*latest_output, trajectoryValue);
     }
 
