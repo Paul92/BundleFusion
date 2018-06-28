@@ -1,0 +1,87 @@
+diff --git a/include/core-mesh/meshData.h b/include/core-mesh/meshData.h
+index 6210eaa..b025a09 100644
+--- a/include/core-mesh/meshData.h
++++ b/include/core-mesh/meshData.h
+@@ -62,8 +62,8 @@ public:
+ 					face = f;
+ 					curr = c;
+ 				}
+-				const_noconst_iterator(const_noconst_iterator<false>& other) {
+-					face = other.getFace();
++				const_noconst_iterator(const const_noconst_iterator<false>& other) {
++					face = other.face;
+ 					curr = other.getCurr();
+ 				}
+ 				const_noconst_iterator& operator++() {
+@@ -258,9 +258,9 @@ public:
+ 				curr = c;
+ 				indices = i;
+ 			}
+-			const_noconst_iterator(const_noconst_iterator<false>& other) {
++			const_noconst_iterator(const const_noconst_iterator<false>& other) {
+ 				curr = other.getCurr();
+-				indices = other.getIndices();
++				indices = other.indices;
+ 			}
+ 			const_noconst_iterator& operator++() {
+ 				curr++;
+@@ -296,7 +296,7 @@ public:
+ 			bool operator> (const const_noconst_iterator& other) {return (curr-other.curr)> 0;}
+ 			bool operator>=(const const_noconst_iterator& other) {return (curr-other.curr)>=0;}
+ 
+-			Face operator*() {
++			FaceRef operator*() {
+ 				return (*indices)[curr];
+ 			}
+ 
+diff --git a/include/core-mesh/meshIO.cpp b/include/core-mesh/meshIO.cpp
+index 7f1cfb3..6a0c8e0 100644
+--- a/include/core-mesh/meshIO.cpp
++++ b/include/core-mesh/meshIO.cpp
+@@ -702,10 +702,10 @@ void MeshIO<FloatType>::saveToOBJ( const std::string& filename, const MeshData<F
+ 
+ 	for (size_t i = 0; i < mesh.m_Vertices.size(); i++) {
+ 		file << "v ";
+-		if (isnan(mesh.m_Vertices[i].x))	file << "NaN NaN NaN";
++		if (std::isnan(mesh.m_Vertices[i].x))	file << "NaN NaN NaN";
+ 		else								file << mesh.m_Vertices[i].x << " " << mesh.m_Vertices[i].y << " " << mesh.m_Vertices[i].z;
+ 		if (mesh.m_Colors.size() > 0) {
+-			if (isnan(mesh.m_Colors[i].x))	file << " NaN NaN NaN";
++			if (std::isnan(mesh.m_Colors[i].x))	file << " NaN NaN NaN";
+ 			else							file << " " << mesh.m_Colors[i].x << " " << mesh.m_Colors[i].y << " " << mesh.m_Colors[i].z;
+ 		}
+ 		file << "\n";
+@@ -770,4 +770,4 @@ void MeshIO<FloatType>::saveToOBJ( const std::string& filename, const MeshData<F
+ 
+ }  // namespace ml
+ 
+-#endif  // CORE_MESH_MESHIO_INL_H_
+\ No newline at end of file
++#endif  // CORE_MESH_MESHIO_INL_H_
+diff --git a/include/ext-depthcamera/sensorData.h b/include/ext-depthcamera/sensorData.h
+index b611e62..1f19c37 100644
+--- a/include/ext-depthcamera/sensorData.h
++++ b/include/ext-depthcamera/sensorData.h
+@@ -1282,7 +1282,7 @@ namespace ml {
+ 			std::string getCurrent() {
+ 				std::stringstream ss;
+ 				ss << m_base;
+-				for (unsigned int i = std::max(1u, (unsigned int)std::ceilf(std::log10f((float)m_current + 1))); i < m_numCountDigits; i++) ss << "0";
++				for (unsigned int i = std::max(1u, (unsigned int)std::ceil(std::log10((float)m_current + 1))); i < m_numCountDigits; i++) ss << "0";
+ 				ss << m_current;
+ 				ss << m_fileEnding;
+ 				return ss.str();
+diff --git a/include/mLibFreeImage.h b/include/mLibFreeImage.h
+index 0f79633..db87906 100644
+--- a/include/mLibFreeImage.h
++++ b/include/mLibFreeImage.h
+@@ -1,8 +1,7 @@
+ //
+ // external FreeImage headers
+ //
+-//#include "FreeImage.h"
+-#include "FreeImage/FreeImage.h"
++#include "FreeImage.h"
+ //#include <wchar.h>
+ 
+ //
