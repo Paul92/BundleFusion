@@ -1,12 +1,5 @@
 #include "SLAMBenchSensor.h"
 
-#include "../../../framework/shared/include/io/FrameBuffer.h"
-#include "../../../framework/shared/include/io/SLAMFrame.h"
-
-#include <opencv2/highgui/highgui.hpp>
-#include <opencv2/features2d/features2d.hpp>
-#include <opencv2/imgproc/imgproc.hpp>
-#include <opencv2/nonfree/nonfree.hpp>
 
 #include "SiftVisualization.h"
 #include "ImageHelper.h"
@@ -24,8 +17,6 @@ SLAMBenchSensor::SLAMBenchSensor(slambench::io::DepthSensor *depth_sensor,
 
 SLAMBenchSensor::~SLAMBenchSensor() {
 }
-
-
 
 void SLAMBenchSensor::createFirstConnected() {
 
@@ -80,36 +71,7 @@ bool SLAMBenchSensor::processDepth() {
     size_t size = depthFrame->size;
     size_t pixels = depth_sensor->Height * depth_sensor->Width;
 
-  //  short int *data = (short int*)(depthFrame->data);
-
     memcpy(depth, depthFrame->data, size);
-
-//    cv::Mat mat(depth_sensor->Height, depth_sensor->Width, CV_8U);
-//    for (int i = 0; i < pixels; i++) {
-//        if (depth[i] == std::numeric_limits<float>::infinity()) {
-//            mat.at<unsigned char>(i) = 255;
-//        } else if (depth[i] == -std::numeric_limits<float>::infinity()) {
-//            mat.at<unsigned char>(i) = 0;
-//        } else {
-//            mat.at<unsigned char>(i) = 127;
-//        }
-//    }
-//    cv::namedWindow("cacamaca");
-//    cv::imshow("cacamaca", mat);
-//
-//    auto cvDepth = cv::Mat(depth_sensor->Height, depth_sensor->Width, CV_32FC1, depthFrame->data);
-//    
-//    double min, max;
-//    // TODO: can get rid of this after analysing the input format
-//    cv::minMaxLoc(cvDepth, &min, &max);
-//
-//    cv::Mat charImage;
-//    cvDepth -= min;
-//    cvDepth.cv::Mat::convertTo(charImage, CV_8U, 255.0/(max-min));
-//
-//    cv::namedWindow("cacamacaca");
-//    cv::imshow("cacamacaca", charImage);
-//    cv::waitKey();
 
     return true;
 }
