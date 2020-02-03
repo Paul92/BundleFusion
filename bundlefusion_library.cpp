@@ -26,13 +26,14 @@ const std::string defaultAlgorithmPath = "benchmarks/bundlefusion/src/original/F
 const std::string defaultAppConfigFile = defaultAlgorithmPath + "zParametersDefault.txt";
 const std::string defaultBundlingConfigFile = defaultAlgorithmPath + "zParametersBundlingDefault.txt";
 
+std::string appConfigFile;
+std::string bundlingConfigFile;
+
 uchar *renderedDepthFrame = nullptr;
 constexpr float MAX_DEPTH_VALUE = 6;
 
 bool sb_new_slam_configuration(SLAMBenchLibraryHelper *slam_settings) {
     try {
-        std::string appConfigFile;
-        std::string bundlingConfigFile;
 
         slam_settings->addParameter(TypedParameter<std::string>("app", "app_config_file", "Application config file", &appConfigFile, &defaultAppConfigFile));
         slam_settings->addParameter(TypedParameter<std::string>("bund", "bundling_config_file", "Bundling config file", &bundlingConfigFile, &defaultBundlingConfigFile));
