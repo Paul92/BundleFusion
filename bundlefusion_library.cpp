@@ -22,7 +22,7 @@ slambench::outputs::Output *rgb_frame_output = nullptr;
 slambench::outputs::Output *depth_frame_output = nullptr;
 slambench::outputs::Output *trajectory_output = nullptr;
 
-const std::string defaultAlgorithmPath = "benchmarks/BundleFusion/src/original/FriedLiver/";
+const std::string defaultAlgorithmPath = "benchmarks/bundlefusion/src/original/FriedLiver/";
 const std::string defaultAppConfigFile = defaultAlgorithmPath + "zParametersDefault.txt";
 const std::string defaultBundlingConfigFile = defaultAlgorithmPath + "zParametersBundlingDefault.txt";
 
