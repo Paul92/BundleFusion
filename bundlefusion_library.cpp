@@ -34,16 +34,8 @@ constexpr float MAX_DEPTH_VALUE = 6;
 
 bool sb_new_slam_configuration(SLAMBenchLibraryHelper *slam_settings) {
     try {
-
         slam_settings->addParameter(TypedParameter<std::string>("app", "app_config_file", "Application config file", &appConfigFile, &defaultAppConfigFile));
         slam_settings->addParameter(TypedParameter<std::string>("bund", "bundling_config_file", "Bundling config file", &bundlingConfigFile, &defaultBundlingConfigFile));
-
-        ParameterFile parameterFileApp(appConfigFile);
-        GlobalAppState::getInstance().readMembers(parameterFileApp);
-
-        //Read the global camera tracking state
-        ParameterFile parameterFileBundling(bundlingConfigFile);
-        GlobalBundlingState::getInstance().readMembers(parameterFileBundling);
     } catch (const std::exception& e) {
         std::cout << "Caught exception: " << e.what() << std::endl;
         exit(EXIT_FAILURE);
@@ -56,6 +48,13 @@ slambench::io::DepthSensor *depth_sensor;
 slambench::io::CameraSensor *rgb_sensor;
 
 bool sb_init_slam_system(SLAMBenchLibraryHelper * slam_settings) {
+
+    ParameterFile parameterFileApp(appConfigFile);
+    GlobalAppState::getInstance().readMembers(parameterFileApp);
+
+    //Read the global camera tracking state
+    ParameterFile parameterFileBundling(bundlingConfigFile);
+    GlobalBundlingState::getInstance().readMembers(parameterFileBundling);
 
     // Intializing sensor
     std::cout << "Initializing sensor" << std::endl;
