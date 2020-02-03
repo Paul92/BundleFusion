@@ -284,7 +284,7 @@ bool sb_update_outputs(SLAMBenchLibraryHelper *lib, const slambench::TimeStamp *
 
         rgb_frame_output->AddPoint(*latest_output,
                         new slambench::values::FrameValue(rgb_sensor->Width, rgb_sensor->Height,
-                        slambench::io::pixelformat::EPixelFormat::RGB_III_888 , colorFrame));
+                        rgb_sensor->PixelFormat, colorFrame));
     }
 
     if (depth_frame_output->IsActive()) {
